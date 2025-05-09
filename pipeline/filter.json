@@ -1,0 +1,147 @@
+{
+	"name": "filter",
+	"properties": {
+		"activities": [
+			{
+				"name": "Filter1",
+				"type": "Filter",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.city_lst",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(toLower(item()),'pune' )",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Filter2",
+				"type": "Filter",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.city_lst",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(toLower(item()),'mumbai' )",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Filter3",
+				"type": "Filter",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.city_lst",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@and(not(equals(toLower(item()),'pune')),not(equals(toLower(item()),'mumbai')))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Filter1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pune_city",
+					"value": {
+						"value": "@activity('Filter1').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Filter2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "mumbai_city",
+					"value": {
+						"value": "@activity('Filter2').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable3",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Filter3",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "other_city",
+					"value": {
+						"value": "@activity('Filter3').output.value",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"city_lst": {
+				"type": "array"
+			}
+		},
+		"variables": {
+			"pune_city": {
+				"type": "Array"
+			},
+			"mumbai_city": {
+				"type": "Array"
+			},
+			"other_city": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "partice"
+		},
+		"annotations": []
+	}
+}
