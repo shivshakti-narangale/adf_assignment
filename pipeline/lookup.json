@@ -19,7 +19,7 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
+							"fileListPath": "input-dataset/delete.txt",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -29,7 +29,8 @@
 					"dataset": {
 						"referenceName": "ds_lookup",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			}
 		],

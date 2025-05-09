@@ -11,11 +11,12 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "EMPdata.csv",
+				"folderPath": "gptl",
 				"fileSystem": "input-dataset"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
-			"firstRowAsHeader": false,
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": []
