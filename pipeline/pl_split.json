@@ -1,0 +1,128 @@
+{
+	"name": "pl_split",
+	"properties": {
+		"activities": [
+			{
+				"name": "act_set_var_person",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": true,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "person_details",
+					"value": {
+						"value": "@pipeline().parameters.person_details",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "act_set_var_first",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "act_set_var_person",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "first_name",
+					"value": {
+						"value": "@split(split(variables('person_details'),' ')[0],'_')[0]",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "act_set_var_age",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "act_set_var_person",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "age",
+					"value": {
+						"value": "@split(variables('person_details'),' ')[1]",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "act_set_last_name",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "act_set_var_person",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "last_name",
+					"value": {
+						"value": "@split(split(variables('person_details'),' ')[0],'_')[1]",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"person_details": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"person_details": {
+				"type": "String"
+			},
+			"first_name": {
+				"type": "String"
+			},
+			"last_name": {
+				"type": "String"
+			},
+			"age": {
+				"type": "String"
+			},
+			"each_val": {
+				"type": "String"
+			},
+			"outer_lst": {
+				"type": "String"
+			},
+			"name_lst": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "second_session"
+		},
+		"annotations": []
+	}
+}
