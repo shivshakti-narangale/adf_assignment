@@ -1,0 +1,96 @@
+{
+	"name": "pl_foreach",
+	"properties": {
+		"activities": [
+			{
+				"name": "act_for_each",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.val_lst",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "each_val",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "each_val",
+								"value": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "act_set_app",
+							"type": "AppendVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "name_lst",
+								"value": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "act_set_var_outer-lst",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "act_for_each",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "outer_lst",
+					"value": {
+						"value": "@variables('name_lst')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"val_lst": {
+				"type": "array"
+			}
+		},
+		"variables": {
+			"each_val": {
+				"type": "String"
+			},
+			"outer_lst": {
+				"type": "Array"
+			},
+			"name_lst": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "second_session"
+		},
+		"annotations": []
+	}
+}
