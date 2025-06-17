@@ -17,6 +17,8 @@
 						{
 							"name": "each_val",
 							"type": "SetVariable",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"secureOutput": false,
@@ -32,16 +34,112 @@
 							}
 						},
 						{
-							"name": "act_set_app",
-							"type": "AppendVariable",
+							"name": "act_if_cond",
+							"type": "IfCondition",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "name_lst",
-								"value": {
-									"value": "@if(equals(item(),'ram'),item() ,' ')",
+								"expression": {
+									"value": "@equals(toLower(item()),'ram')",
 									"type": "Expression"
-								}
+								},
+								"ifFalseActivities": [
+									{
+										"name": "act_app2",
+										"type": "AppendVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "name_lst",
+											"value": "'Mohan'"
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "act_set_app",
+										"type": "AppendVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "name_lst",
+											"value": {
+												"value": "@item()",
+												"type": "Expression"
+											}
+										}
+									}
+								]
+							}
+						},
+						{
+							"name": "act_switch",
+							"type": "Switch",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"on": {
+									"value": "@item()",
+									"type": "Expression"
+								},
+								"cases": [
+									{
+										"value": "maharashtra",
+										"activities": [
+											{
+												"name": "Set variable1",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "state_name",
+													"value": "'maharashtra'"
+												}
+											}
+										]
+									},
+									{
+										"value": "madhay pradesh",
+										"activities": [
+											{
+												"name": "Set variable2",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "state_name",
+													"value": "'madhya pradesh'"
+												}
+											}
+										]
+									}
+								],
+								"defaultActivities": [
+									{
+										"name": "Set variable3",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "state_name",
+											"value": "'unavliable'"
+										}
+									}
+								]
 							}
 						}
 					]
@@ -50,6 +148,8 @@
 			{
 				"name": "act_set_var_outer-lst",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "act_for_each",
@@ -86,6 +186,9 @@
 			},
 			"name_lst": {
 				"type": "Array"
+			},
+			"state_name": {
+				"type": "String"
 			}
 		},
 		"folder": {
